@@ -32,6 +32,7 @@ type UserAgent struct {
 	bot          bool
 	mobile       bool
 	undecided    bool
+	wechat		 bool
 }
 
 // Read from the given string until the given delimiter or the
@@ -113,6 +114,7 @@ func (p *UserAgent) initialize() {
 	p.bot = false
 	p.mobile = false
 	p.undecided = false
+	p.wechat = false
 }
 
 // Parse the given User-Agent string and get the resulting UserAgent object.
@@ -136,6 +138,9 @@ func (p *UserAgent) Parse(ua string) {
 		s := parseSection(ua, &index)
 		if !p.mobile && s.name == "Mobile" {
 			p.mobile = true
+		}
+		if !p.wechat && s.name == "MicroMessenger" {
+			p.wechat = true
 		}
 		sections = append(sections, s)
 	}
@@ -166,4 +171,10 @@ func (p *UserAgent) Bot() bool {
 // Returns true if it's a mobile device, false otherwise.
 func (p *UserAgent) Mobile() bool {
 	return p.mobile
+}
+
+
+// Returns true if it's a wecaht device, false otherwise.
+func (p *UserAgent) Wecaht() bool {
+	return p.wechat
 }
